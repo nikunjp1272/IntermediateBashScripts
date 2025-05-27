@@ -53,3 +53,15 @@ Execute any script using the following command:
 
 ```bash
 ./script_name.sh
+Replace script_name.sh with the desired script's filename.
+
+For example, to run the system performance check:
+
+Bash
+
+./SystemPerformanceCheck.sh
+📄 License
+This project is licensed under the MIT License.
+
+🙌 Acknowledgments
+These scripts were developed as part of ongoing efforts to streamline system administration tasks and serve as educational tools for those looking to enhance their Bash scripting skills.
