@@ -24,9 +24,8 @@ kubectl get events -n <NAMESPACE> --sort-by=.metadata.creationTimestamp --contex
 kubectl get pods --all-namespaces --field-selector=status.phase!=Running,status.phase!=Succeeded 
 kubectl get cronjobs -A --context <CONTEXT-NAME>
 k logs <POD-NAME> -n <NAMESPACE>| grep -iE "error|fail|shutdown|panic|exception|fatal"
-kubectl exec -it -n wm-cristal <name-of-pod> -- bash
-nikunj@WPW0H1VXG:~/.aws$ k logs wm-octasynccorrespondance-microservicesruntime-647f5f7cc7-lhn44 -n wm-octasynccorrespondance
-k logs wm-octasynccorrespondance-microservicesruntime-647f5f7cc7-lhn44 -n wm-octasynccorrespondance | grep -iE "error|fail|shutdown|panic|exception|fatal"
+kubectl exec -it -n <NAMESPACE> <name-of-pod> -- bash
+k logs <POD-NAME> -n <NAMESPACE> | grep -iE "error|fail|shutdown|panic|exception|fatal"
 
 # kubectl logs <POD-NAME> -c <container-name> -n <NAMESPACE>
 # kubectl get namespaces
