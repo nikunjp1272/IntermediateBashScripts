@@ -1,10 +1,10 @@
 # option 1: use "use-context" to use a context and you won't have to add --context in every command, but you will have to keep switching the context if you want to look at the other contexts at the same time.
 # option 2: just copy paste below commands and replace all context names with the context you have set
 
-kubectl config rename-context arn:aws:eks:eu-west-1:123456789:cluster/cluster-name lab
+kubectl config rename-context arn:aws:eks:eu-west-1:123456789:cluster/<CLUSTER-NAME> lab
 kubectl config use-context lab
 kubectl config get-contexts
-kubectl get pods -A --context common-rec
+kubectl get pods -A --context <CLUSTER-NAME>
 kubectl get pods -n <NAMESPACE> # works with or without context
 kubectl logs <POD-NAME> -n <NAMESPACE> --context <CONTEXT-NAME>
 kubectl describe pod <POD-NAME> -n <NAMESPACE>
@@ -30,4 +30,3 @@ k logs <POD-NAME> -n <NAMESPACE> | grep -iE "error|fail|shutdown|panic|exception
 # kubectl logs <POD-NAME> -c <container-name> -n <NAMESPACE>
 # kubectl get namespaces
 # kubectl get pods --all-namespaces
-# 
