@@ -41,7 +41,7 @@ aws cloudwatch list-dashboards --output table
 aws ssm get-parameters --name "/somewhere/something" --region "eu-west-1" --with-decryption --query "Parameters[*].{Value:Value}" --output text
 
 # restoring backup from s3
-aws s3api list-object-versions --bucket engieit-bis-noprod-backup --prefix sag107/rec/rock/eai/0/backup_Fix_5.tar.gz --query Versions[*].VersionId
+aws s3api list-object-versions --bucket engieit-bis-noprod-backup --prefix /path/to/bucket/backup.gz --query Versions[*].VersionId
 
 # listing alarms excluding keyword "wm1015"
 aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[?contains(AlarmName, 'wm1015') == \`false\`].[AlarmName]"  --region eu-west-1
@@ -76,7 +76,7 @@ aws ec2 describe-network-interfaces \
 
 # check if IP is an elastic IP
 aws ec2 describe-addresses --region eu-west-1 \
-  --query "Addresses[?PublicIp=='10.131.237.109'].[PublicIp, AllocationId, InstanceId, NetworkInterfaceId]" \
+  --query "Addresses[?PublicIp=='10.10.10.10'].[PublicIp, AllocationId, InstanceId, NetworkInterfaceId]" \
   --output table
 
 # to get the public IP of an ec2 server connecting outside of the AWS env
@@ -95,40 +95,40 @@ aws ec2 describe-nat-gateways --region eu-west-1 \
 for region in $(aws ec2 describe-regions --query "Regions[].RegionName" --output text); do
   echo "Checking region: $region"
   aws ec2 describe-nat-gateways --region $region \
-    --query "NatGateways[?NatGatewayAddresses[?PublicIp=='10.131.237.109']].[NatGatewayId, VpcId, SubnetId]" \
+    --query "NatGateways[?NatGatewayAddresses[?PublicIp=='10.10.10.10']].[NatGatewayId, VpcId, SubnetId]" \
     --output table
 done
 
 
   aws ec2 describe-network-interfaces \
-  --query "NetworkInterfaces[?PrivateIpAddresses[?PrivateIpAddress=='10.131.237.109'] || Association.PublicIp=='10.131.237.109'].[NetworkInterfaceId, PrivateIpAddresses[*].PrivateIpAddress, Association.PublicIp, Attachment.InstanceId]" \
+  --query "NetworkInterfaces[?PrivateIpAddresses[?PrivateIpAddress=='10.10.10.10'] || Association.PublicIp=='10.10.10.10'].[NetworkInterfaceId, PrivateIpAddresses[*].PrivateIpAddress, Association.PublicIp, Attachment.InstanceId]" \
   --output table
 
 
 # extracting a file with .tar.gz extension
-tar -xzvf backup_Fix_8.tar.gz
+tar -xzvf backup.tar.gz
 
 # viewing the contents of the tar
-tar -tzf backup_Fix_8.tar.gz
+tar -tzf backup.tar.gz
 
 aws ec2 describe-nat-gateways --region eu-west-1 \
   --query "NatGateways[?NatGatewayAddresses[?PublicIp=='IP']].[NatGatewayId, SubnetId, VpcId, NatGatewayAddresses[*].PublicIp]" \
   --output table
 
-
-ids="i-091908ca8927d96fb i-0fdfcd194359664bf i-09e3c70519598068a i-06b34d846c8a2c843 i-007a03648ed20ebc2 i-0de1f68ee61ef5c09 i-00791eb2f4e773ca2 i-02a728772d95deb7b i-08c3f75b53c6a352c i-020af2b47d52368a3 i-0007292665160e0e8 i-021a6ee58b15da797 i-092bfed00a67fda5c i-0ce03ff00c0c5d23b i-0193df558a2ce8dbb i-0a52f2123ad0cea50 i-085fe562ce927a6ce i-00b3a43de9b6b2a29 i-054a226767f6f9b2b i-0f58ca0bd73cfafed i-0b140dbb25c1720fb i-0d8f315e0b7373688 i-03367c1791722a6de i-099ee92c2d248f4b2 i-0c494b981ccd5be82 i-02b3c99cb49aa2757 i-0a2904fea9f1dc82c"
+# to iterate over a number of instance ids to get their required details
+ids="i-xxxxxxxxxxxxxxxxx i-xxxxxxxxxxxxxxxxx i-xxxxxxxxxxxxxxxxx i-xxxxxxxxxxxxxxxxx i-xxxxxxxxxxxxxxxxx i-xxxxxxxxxxxxxxxxx"
 aws ec2 describe-instances --instance-ids $ids \
   --query 'Reservations[].Instances[].{ID: InstanceId, Name: Tags[?Key==`Name`]|[0].Value}' \
   --output table
 
 
 # to know the creation date of any role
-aws iam get-role --role-name WSSmyRedshiftRole --query "Role.CreateDate"
+aws iam get-role --role-name SomeIAMRole --query "Role.CreateDate"
 
 # to know when the iam role was last used
-aws iam get-role --role-name WSSmyRedshiftRole --query "Role.RoleLastUsed"
+aws iam get-role --role-name SomeIAMRole --query "Role.RoleLastUsed"
 
 aws cloudtrail lookup-events \
-  --lookup-attributes AttributeKey=Username,AttributeValue=WSSmyRedshiftRole \
+  --lookup-attributes AttributeKey=Username,AttributeValue=SomeIAMRole \
   --max-results 1 \
   --query "Events[0].EventTime"
