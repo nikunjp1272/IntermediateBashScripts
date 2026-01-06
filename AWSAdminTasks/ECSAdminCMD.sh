@@ -5,10 +5,9 @@ session-manager-plugin --version
 rm session-manager-plugin.deb
 
 # list clusters in ECS
-aws ecs list-clusters --profile NOPROD_P
+aws ecs list-clusters --profile <PROFILE-NAME>
 
 # describe service running in a cluster
- aws ecs describe-services --cluster <cluster-name> --services <service-name>
-
+ aws ecs describe-services --cluster <CLUSTER-NAME> --services <SERVICE-NAME>
  # list all services inside a cluster
- aws ecs list-services --cluster clip-noprod-msr-cluster --profile NOPROD_P
+ aws ecs list-services --cluster <CLUSTER-NAME> --profile <PROFILE-NAME>
