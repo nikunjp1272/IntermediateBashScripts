@@ -132,3 +132,11 @@ aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=Username,AttributeValue=SomeIAMRole \
   --max-results 1 \
   --query "Events[0].EventTime"
+
+for region in $(aws ec2 describe-regions --query "Regions[*].RegionName" --output text);
+do
+  echo "Region: $region";
+  aws fsx describe-file-systems --region $region \
+    --query "FileSystems[*].DNSName" \
+    --output text;
+done
