@@ -125,14 +125,16 @@ aws ec2 describe-instances --instance-ids $ids \
 # to know the creation date of any role
 aws iam get-role --role-name SomeIAMRole --query "Role.CreateDate"
 
-# to know when the iam role was last used
+# to know when the IAM role was last used
 aws iam get-role --role-name SomeIAMRole --query "Role.RoleLastUsed"
 
+# to check the IAM role for its last used details
 aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=Username,AttributeValue=SomeIAMRole \
   --max-results 1 \
   --query "Events[0].EventTime"
 
+# to iterate through all regions in AWS and get the information about all the existing filesystems
 for region in $(aws ec2 describe-regions --query "Regions[*].RegionName" --output text);
 do
   echo "Region: $region";
