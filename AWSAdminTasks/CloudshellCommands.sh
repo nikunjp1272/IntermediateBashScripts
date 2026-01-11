@@ -41,7 +41,7 @@ aws cloudwatch list-dashboards --output table
 aws ssm get-parameters --name "/somewhere/something" --region "eu-west-1" --with-decryption --query "Parameters[*].{Value:Value}" --output text
 
 # restoring backup from s3
-aws s3api list-object-versions --bucket engieit-bis-noprod-backup --prefix /path/to/bucket/backup.gz --query Versions[*].VersionId
+aws s3api list-object-versions --bucket <S3-BUCKET-NAME> --prefix /path/to/bucket/backup.gz --query Versions[*].VersionId
 
 # listing alarms excluding keyword "wm1015"
 aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[?contains(AlarmName, 'wm1015') == \`false\`].[AlarmName]"  --region eu-west-1
